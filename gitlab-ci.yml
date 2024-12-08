@@ -1,0 +1,15 @@
+pages:
+  script:
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
+    - sed -i "s/COMMITHASH/${CI_COMMIT_SHA}/g" public/index.html
+    - find public -type f -regex '.*\.\(htm\|html\|txt\|text\|js\|css\)$' -exec gzip -f -k {} \;
+
+  artifacts:
+    paths:
+      - public
+
+  only:
+    - main
+
