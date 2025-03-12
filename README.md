@@ -10,6 +10,6 @@
 
 ## Dépôt
 
-Ce dépôt permet le partage du code source de l'application développée par [Alan Choufa](https://alan.choufa.fr/) sur le framevork Angular.
+Ce dépôt permet le partage du code source de l'application développée par [Alan Choufa](https://alan.choufa.fr/) sur le framework Angular.
 
 Licence GNU GPL
