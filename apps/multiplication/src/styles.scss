@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: BelleAllure;
+  src: url('/assets/font/BelleAllure/BelleAllureScript3i-Gros.otf')
+    format('opentype');
+}
+
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-family: 'BelleAllure', 'arial', sans-serif;
+  font-size: x-large;
+}

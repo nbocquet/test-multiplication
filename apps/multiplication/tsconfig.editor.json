@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*.ts", "../../libs/test/src/lib/test/test.constante.ts"],
+  "compilerOptions": {
+    "types": ["jest", "node"]
+  }
+}
