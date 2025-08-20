@@ -10,6 +10,7 @@ import {
   nomChanges,
   selectNom,
   selectTables,
+  selectTime,
 } from '@classe-a-deux/test';
 import { Store } from '@ngrx/store';
 import { jsPDF } from 'jspdf';
@@ -140,16 +141,18 @@ export class ResultComponent {
   doc = new jsPDF('p', 'pt', 'a4');
   tables$ = this.#store.select(selectTables);
   nom$ = this.#store.select(selectNom);
+  time$ = this.#store.select(selectTime);
 
   nomChanges(nom: string) {
     this.#store.dispatch(nomChanges({ nom }));
   }
   save() {
-    combineLatest([this.tables$, this.nom$])
+    combineLatest([this.tables$, this.nom$, this.time$])
       .pipe(take(1))
-      .subscribe(([tables, nom]) => {
+      .subscribe(([tables, nom, time]) => {
         this.doc.setTextColor('#000000');
-        this.doc.text(nom, 250, 25);
+        this.doc.setFontSize(10);
+        this.doc.text(`${nom} - Temps par calcul : ${time} s`, 250, 25);
 
         tables.forEach((table, i) => {
           if (this.correct(table)) {
