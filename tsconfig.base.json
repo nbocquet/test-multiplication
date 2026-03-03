@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@classe-a-deux/home": ["libs/home/src/index.ts"],
+      "@classe-a-deux/result": ["libs/result/src/index.ts"],
+      "@classe-a-deux/test": ["libs/test/src/index.ts"],
+      "@classe-a-deux/test/effects": ["libs/test/src/lib/test/test.effects.ts"],
+      "@classe-a-deux/shared-ui": ["libs/shared/ui/src/index.ts"],
+      "@classe-a-deux/shared-services": ["libs/shared/services/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

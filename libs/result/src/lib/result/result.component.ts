@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   ButtonComponent,
@@ -20,10 +20,8 @@ import { combineLatest, take } from 'rxjs';
   selector: 'classe-a-deux-result',
   standalone: true,
   imports: [
-    NgIf,
     AsyncPipe,
     NgClass,
-    NgFor,
     ContainerComponent,
     ButtonComponent,
     InputComponent,
@@ -40,94 +38,78 @@ import { combineLatest, take } from 'rxjs';
       <div class="w-full">
         <div class="flex flex-row justify-between w-full">
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t2(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t2(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t3(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t3(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t4(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t4(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t5(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t5(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
         </div>
         <div class="flex flex-row justify-between w-full mt-5">
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t6(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t6(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t7(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t7(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t8(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t8(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
           <div class="flex flex-col">
-            <ng-container *ngFor="let table of tables; let i = index">
-              <span
-                *ngIf="t9(i)"
-                [ngClass]="
-                  correct(table) ? 'text-green-700' : 'text-orange-900 line-through'
-                ">
-                {{ table.question }} {{ table.answer }}
-              </span>
-            </ng-container>
+            @for (table of tables; track table.id; let i = $index) {
+              @if (t9(i)) {
+                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                  {{ table.question }} {{ table.answer }}
+                </span>
+              }
+            }
           </div>
         </div>
       </div>
@@ -222,10 +204,6 @@ export class ResultComponent {
 
   correct(multiplication: Multiplication) {
     return multiplication.result === multiplication.answer;
-  }
-
-  tenth(i: number) {
-    return (i + 1) % 10 === 0;
   }
 
   t2(i: number) {

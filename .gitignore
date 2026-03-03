@@ -1,0 +1,14 @@
+
+# Nx cache
+.nx/installation
+.nx/cache
+.nx/workspace-data
+
+# Angular cache
+.angular/
+
+# Build output
+dist/
+
+# Dependencies
+node_modules/

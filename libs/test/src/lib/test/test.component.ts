@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import {
   ButtonCircleComponent,
@@ -15,8 +15,6 @@ import { TableMultiplicationComponentStore } from './test.component-store';
   standalone: true,
   imports: [
     AsyncPipe,
-    NgFor,
-    NgIf,
     NgClass,
     ContainerComponent,
     InputComponent,
@@ -53,6 +51,7 @@ import { TableMultiplicationComponentStore } from './test.component-store';
       } } }
       <ui-input
         [reset]="(answer$ | async)!"
+        [autofocus]="true"
         (valueChanges)="answerChanges($event)">
         Réponse
       </ui-input>
@@ -68,7 +67,7 @@ import { TableMultiplicationComponentStore } from './test.component-store';
           delete
         </ui-button-circle>
       </div>
-      <ui-button class="mt-2" (action)="validate()">Valider</ui-button>
+      <ui-button class="mt-2" [disabled]="(disabledValidate$ | async)!" (action)="validate()">Valider</ui-button>
     </ui-container>
     <ui-progress-bar [progress]="(progressTest$ | async)!"></ui-progress-bar>
   `,

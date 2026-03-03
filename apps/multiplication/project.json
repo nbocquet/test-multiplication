@@ -7,12 +7,12 @@
   "tags": ["type:app", "scope:multiplication"],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/multiplication",
         "index": "apps/multiplication/src/index.html",
-        "main": "apps/multiplication/src/main.ts",
+        "browser": "apps/multiplication/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/multiplication/tsconfig.app.json",
         "assets": [
@@ -39,9 +39,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true

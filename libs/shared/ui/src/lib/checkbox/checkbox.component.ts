@@ -33,7 +33,6 @@ export class CheckboxComponent {
   @Output() action = new EventEmitter<boolean>();
 
   checked() {
-    this.check = !this.check;
-    this.action.emit(this.check);
+    this.action.emit(!this.check);
   }
 }

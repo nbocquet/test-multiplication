@@ -69,11 +69,8 @@ export class HomeComponent implements OnInit {
   selectedTable$ = this.#store.select(selectSelectedTable);
 
   ngOnInit(): void {
-    this.#store.dispatch(
-      updateTime({
-        time: localStorage.getItem('time') ? +localStorage.getItem('time')! : 5,
-      })
-    );
+    const savedTime = localStorage.getItem('time');
+    this.#store.dispatch(updateTime({ time: savedTime ? +savedTime : 5 }));
     if (localStorage.getItem('selectedTable')) {
       JSON.parse(localStorage.getItem('selectedTable')!).forEach(
         (selectedTable: number) =>

@@ -18,8 +18,12 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 export class InputComponent implements AfterViewInit {
   @Input() set reset(value: string) {
     this.value.patchValue(value);
+    if (this.autofocus) {
+      this.inputElement?.nativeElement.focus();
+    }
   }
-  
+  @Input() autofocus = false;
+
   value = new FormControl('', { nonNullable: true });
   @Output() valueChanges = this.value.valueChanges;
 

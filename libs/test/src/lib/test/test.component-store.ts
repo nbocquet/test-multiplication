@@ -92,7 +92,7 @@ export class TableMultiplicationComponentStore extends ComponentStore<TableMulti
     )
   );
 
-  readonly validate: any = this.effect<void>(source$ =>
+  readonly validate = this.effect<void>(source$ =>
     source$.pipe(
       withLatestFrom(this.tables$, this.answer$, this.count$),
       tap(() => this.patchState({ disabledValidate: true })),
