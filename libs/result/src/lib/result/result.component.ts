@@ -126,7 +126,8 @@ export class ResultComponent {
   time$ = this.#store.select(selectTime);
 
   nomChanges(nom: string) {
-    this.#store.dispatch(nomChanges({ nom }));
+    const sanitized = nom.slice(0, 50).replace(/[^\p{L}\p{N}\s\-\.]/gu, '');
+    this.#store.dispatch(nomChanges({ nom: sanitized }));
   }
   save() {
     combineLatest([this.tables$, this.nom$, this.time$])
@@ -198,7 +199,8 @@ export class ResultComponent {
             );
           }
         });
-        this.doc.save(`${nom}.pdf`);
+        const filename = (nom || 'résultat').replace(/[^a-zA-Z0-9\-_\. ]/g, '_');
+        this.doc.save(`${filename}.pdf`);
       });
   }
 

@@ -71,16 +71,22 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     const savedTime = localStorage.getItem('time');
     this.#store.dispatch(updateTime({ time: savedTime ? +savedTime : 5 }));
-    if (localStorage.getItem('selectedTable')) {
-      JSON.parse(localStorage.getItem('selectedTable')!).forEach(
-        (selectedTable: number) =>
-          this.#store.dispatch(addSelectedTable({ selectedTable }))
-      );
-    } else {
-      [2, 3, 4, 5, 6, 7, 8, 9].forEach(selectedTable =>
-        this.#store.dispatch(addSelectedTable({ selectedTable }))
-      );
+    const defaultTables = [2, 3, 4, 5, 6, 7, 8, 9];
+    let savedTables: number[] = defaultTables;
+    try {
+      const raw = localStorage.getItem('selectedTable');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          savedTables = parsed;
+        }
+      }
+    } catch {
+      savedTables = defaultTables;
     }
+    savedTables.forEach(selectedTable =>
+      this.#store.dispatch(addSelectedTable({ selectedTable }))
+    );
   }
 
   navigate() {
@@ -88,7 +94,8 @@ export class HomeComponent implements OnInit {
   }
 
   updateTime(time: string) {
-    this.#store.dispatch(updateTime({ time: +time }));
+    const parsed = Math.max(1, Math.min(60, +time || 5));
+    this.#store.dispatch(updateTime({ time: parsed }));
   }
 
   checked(check: boolean, selectedTable: number) {
