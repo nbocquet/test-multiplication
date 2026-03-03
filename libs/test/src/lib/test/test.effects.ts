@@ -8,6 +8,7 @@ import {
   clearTable,
   removeSelectedTable,
   selectSelectedTable,
+  updateQuestionCount,
   updateTime,
 } from './test.store';
 
@@ -20,6 +21,18 @@ export const syncTimeLocalStorageEffect = createEffect(
   },
   { functional: true, dispatch: false }
 );
+export const syncQuestionCountLocalStorageEffect = createEffect(
+  () => {
+    return inject(Actions).pipe(
+      ofType(updateQuestionCount),
+      tap(({ questionCount }) =>
+        localStorage.setItem('questionCount', `${questionCount}`)
+      )
+    );
+  },
+  { functional: true, dispatch: false }
+);
+
 export const syncSelectedTableLocalStorageEffect = createEffect(
   () => {
     const store = inject(Store);

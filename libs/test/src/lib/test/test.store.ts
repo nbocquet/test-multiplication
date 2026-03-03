@@ -13,6 +13,7 @@ export interface TableMultiplicationState {
   selectedTable: number[];
   nom: string;
   time: number;
+  questionCount: number;
 }
 
 export const init: TableMultiplicationState = {
@@ -20,6 +21,7 @@ export const init: TableMultiplicationState = {
   selectedTable: [],
   nom: '',
   time: 5,
+  questionCount: 0,
 };
 
 const testActions = createActionGroup({
@@ -32,6 +34,7 @@ const testActions = createActionGroup({
     'Table Changes': props<{ table: Multiplication }>(),
     'Nom changes': props<{ nom: string }>(),
     'Update time': props<{ time: number }>(),
+    'Update Question Count': props<{ questionCount: number }>(),
   },
 });
 
@@ -43,6 +46,7 @@ export const {
   tableChanges,
   nomChanges,
   updateTime,
+  updateQuestionCount,
 } = testActions;
 
 export const testFeature = createFeature({
@@ -77,9 +81,18 @@ export const testFeature = createFeature({
     on(updateTime, (state, { time }) => ({
       ...state,
       time,
+    })),
+    on(updateQuestionCount, (state, { questionCount }) => ({
+      ...state,
+      questionCount,
     }))
   ),
 });
 
-export const { selectTables, selectSelectedTable, selectNom, selectTime } =
-  testFeature;
+export const {
+  selectTables,
+  selectSelectedTable,
+  selectNom,
+  selectTime,
+  selectQuestionCount,
+} = testFeature;

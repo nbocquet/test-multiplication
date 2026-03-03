@@ -16,7 +16,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { Multiplication, shuffle } from './test.constante';
-import { selectTables, selectTime, tableChanges } from './test.store';
+import { selectQuestionCount, selectTables, selectTime, tableChanges } from './test.store';
 
 export interface TableMultiplicationState {
   tables: Multiplication[];
@@ -83,8 +83,14 @@ export class TableMultiplicationComponentStore extends ComponentStore<TableMulti
   readonly initTable = this.effect<void>(source$ =>
     source$.pipe(
       exhaustMap(() =>
-        this.#store.select(selectTables).pipe(
-          map(tables => shuffle([...tables])),
+        combineLatest([
+          this.#store.select(selectTables),
+          this.#store.select(selectQuestionCount),
+        ]).pipe(
+          map(([tables, questionCount]) => {
+            const shuffled = shuffle([...tables]);
+            return questionCount > 0 ? shuffled.slice(0, questionCount) : shuffled;
+          }),
           tap(tables => this.patchState(() => ({ tables })))
         )
       ),

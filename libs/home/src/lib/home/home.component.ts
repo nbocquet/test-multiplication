@@ -15,8 +15,10 @@ import {
 import {
   addSelectedTable,
   removeSelectedTable,
+  selectQuestionCount,
   selectSelectedTable,
   selectTime,
+  updateQuestionCount,
   updateTime,
 } from '@classe-a-deux/test';
 import { Store } from '@ngrx/store';
@@ -40,6 +42,12 @@ import { map } from 'rxjs';
         <ui-input
           [reset]="(time$ | async)!"
           (valueChanges)="updateTime($event)"></ui-input>
+      </div>
+      <div class="flex flex-start items-center w-full m-5">
+        <span class="m-3">Nb de calculs</span>
+        <ui-input
+          [reset]="(questionCount$ | async)!"
+          (valueChanges)="updateQuestionCount($event)">Nb de calculs (0 = tous)</ui-input>
       </div>
       <div class="flex flex-wrap justify-between w-full ">
         <span class="flex items-center ml-3">Tables</span>
@@ -67,10 +75,15 @@ export class HomeComponent implements OnInit {
   #store = inject(Store);
   time$ = this.#store.select(selectTime).pipe(map(time => `${time}`));
   selectedTable$ = this.#store.select(selectSelectedTable);
+  questionCount$ = this.#store.select(selectQuestionCount).pipe(map(qc => `${qc}`));
 
   ngOnInit(): void {
     const savedTime = localStorage.getItem('time');
     this.#store.dispatch(updateTime({ time: savedTime ? +savedTime : 5 }));
+    const savedQC = localStorage.getItem('questionCount');
+    if (savedQC !== null) {
+      this.#store.dispatch(updateQuestionCount({ questionCount: Math.max(0, Math.min(200, +savedQC || 0)) }));
+    }
     const defaultTables = [2, 3, 4, 5, 6, 7, 8, 9];
     let savedTables: number[] = defaultTables;
     try {
@@ -96,6 +109,12 @@ export class HomeComponent implements OnInit {
   updateTime(time: string) {
     const parsed = Math.max(1, Math.min(60, +time || 5));
     this.#store.dispatch(updateTime({ time: parsed }));
+  }
+
+  updateQuestionCount(value: string) {
+    const parsed = Math.floor(+value);
+    const questionCount = isNaN(parsed) || parsed < 0 ? 0 : Math.min(200, parsed);
+    this.#store.dispatch(updateQuestionCount({ questionCount }));
   }
 
   checked(check: boolean, selectedTable: number) {
