@@ -7,7 +7,7 @@ import {
   InputComponent,
   ProgressBarComponent,
 } from '@classe-a-deux/shared-ui';
-import { take } from 'rxjs';
+import { combineLatest, map, take } from 'rxjs';
 import { TableMultiplicationComponentStore } from './test.component-store';
 
 @Component({
@@ -52,6 +52,7 @@ import { TableMultiplicationComponentStore } from './test.component-store';
       <ui-input
         [reset]="(answer$ | async)!"
         [autofocus]="true"
+        [numbersOnly]="true"
         (valueChanges)="answerChanges($event)">
         Réponse
       </ui-input>
@@ -67,7 +68,7 @@ import { TableMultiplicationComponentStore } from './test.component-store';
           delete
         </ui-button-circle>
       </div>
-      <ui-button class="mt-2" [disabled]="(disabledValidate$ | async)!" (action)="validate()">Valider</ui-button>
+      <ui-button class="mt-2" [disabled]="(canValidate$ | async)!" (action)="validate()">Valider</ui-button>
     </ui-container>
     <ui-progress-bar [progress]="(progressTest$ | async)!"></ui-progress-bar>
   `,
@@ -81,6 +82,9 @@ export class TableMultiplicationComponent {
   progressCounter$ = this.#storeComponent.progressCounter$;
   progressTest$ = this.#storeComponent.progressTest$;
   disabledValidate$ = this.#storeComponent.disabledValidate$;
+  canValidate$ = combineLatest([this.disabledValidate$, this.answer$]).pipe(
+    map(([disabled, answer]) => disabled || answer === '')
+  );
 
   answerChanges(answer: string) {
     this.#storeComponent.patchState({ answer });
@@ -99,8 +103,8 @@ export class TableMultiplicationComponent {
   }
 
   validate() {
-    this.disabledValidate$.pipe(take(1)).subscribe(disabled => {
-      if (!disabled) {
+    combineLatest([this.disabledValidate$, this.answer$]).pipe(take(1)).subscribe(([disabled, answer]) => {
+      if (!disabled && answer !== '') {
         this.#storeComponent.validate();
       }
     });

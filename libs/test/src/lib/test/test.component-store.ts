@@ -100,13 +100,14 @@ export class TableMultiplicationComponentStore extends ComponentStore<TableMulti
 
   readonly validate = this.effect<void>(source$ =>
     source$.pipe(
-      withLatestFrom(this.tables$, this.answer$, this.count$),
+      withLatestFrom(this.tables$, this.answer$, this.count$, this.progressCounter$, this.#store.select(selectTime)),
       tap(() => this.patchState({ disabledValidate: true })),
-      tap(([_, tables, answer, count]) =>
+      tap(([_, tables, answer, count, progressCounter, time]) => {
+        const responseTime = Math.round((100 - progressCounter) * time / 100 * 10) / 10;
         this.#store.dispatch(
-          tableChanges({ table: { ...tables[count], answer: +answer } })
-        )
-      ),
+          tableChanges({ table: { ...tables[count], answer: +answer, responseTime } })
+        );
+      }),
       tap(([_, tables, answer, count]) =>
         this.updateIndicateur(
           tables[count]?.result === +answer ? indicateurValid : indicateurError

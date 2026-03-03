@@ -3,6 +3,7 @@ export type Multiplication = {
   question: string;
   result: number;
   answer: number;
+  responseTime: number;
 };
 
 export const TABLE = (x: number) =>
@@ -11,6 +12,7 @@ export const TABLE = (x: number) =>
     question: `${x} × ${k + 1} = `,
     answer: x * (k + 1),
     result: x * (k + 1),
+    responseTime: 0,
   }));
 
 export const LIST_TABLE = Array.from({ length: 10 }, (_, k) => TABLE(k + 1));

@@ -40,8 +40,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t2(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -49,8 +50,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t3(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -58,8 +60,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t4(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -67,8 +70,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t5(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -78,8 +82,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t6(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -87,8 +92,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t7(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -96,8 +102,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t8(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -105,8 +112,9 @@ import { combineLatest, take } from 'rxjs';
           <div class="flex flex-col">
             @for (table of tables; track table.id; let i = $index) {
               @if (t9(i)) {
-                <span [ngClass]="correct(table) ? 'text-green-700' : 'text-orange-900 line-through'">
+                <span [ngClass]="!tested(table) ? 'text-blue-600' : correct(table) ? 'text-green-700' : 'text-red-600 line-through'">
                   {{ table.question }} {{ table.answer }}
+                  <span class="text-xs text-gray-400">({{ table.responseTime }}s)</span>
                 </span>
               }
             }
@@ -138,62 +146,66 @@ export class ResultComponent {
         this.doc.text(`${nom} - Temps par calcul : ${time} s`, 250, 25);
 
         tables.forEach((table, i) => {
-          if (this.correct(table)) {
+          if (!this.tested(table)) {
+            this.doc.setTextColor('#1d4ed8');
+            this.doc.setFont('helvetica', 'normal');
+            this.doc.setFontSize(9);
+          } else if (this.correct(table)) {
             this.doc.setTextColor('#038f13');
             this.doc.setFont('helvetica', 'normal');
             this.doc.setFontSize(9);
-          } else {          
-            this.doc.setTextColor('#9c0606');      
+          } else {
+            this.doc.setTextColor('#dc2626');
             this.doc.setFont('helvetica', 'bold');
             this.doc.setFontSize(10);
           }
           if (i <= 9) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               50,
               25 * (i + 2)
             );
           }
           if (i > 9 && i <= 19) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               50,
               25 * (i + 3)
             );
           }
           if (i > 19 && i <= 29) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               50,
               25 * (i + 4)
             );
           }
           if (i > 29 && i <= 39) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               250,
               25 * (i - 28)
             );
           }
 
           if (i > 39 && i <= 49) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               250,
               25 * (i - 27)
             );
           }
 
           if (i > 49 && i <= 59) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               250,
               25 * (i - 26)
             );
           }
 
           if (i > 59 && i <= 69) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               450,
               25 * (i - 58)
             );
           }
           if (i > 69) {
-            this.doc.text(`${table.question} ${table.answer} ${this.correct(table) ? ' OK ' : '| Non, '+table.question+table.result}`,
+            this.doc.text(`${table.question} ${!this.tested(table) ? '(non testé)' : table.answer + ' ' + (this.correct(table) ? 'OK' : '| Non, ' + table.question + table.result) + ' (' + table.responseTime + 's)'}`,
               450,
               25 * (i - 57)
             );
@@ -202,6 +214,10 @@ export class ResultComponent {
         const filename = (nom || 'résultat').replace(/[^a-zA-Z0-9\-_\. ]/g, '_');
         this.doc.save(`${filename}.pdf`);
       });
+  }
+
+  tested(multiplication: Multiplication) {
+    return multiplication.responseTime > 0;
   }
 
   correct(multiplication: Multiplication) {

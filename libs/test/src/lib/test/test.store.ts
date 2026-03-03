@@ -74,7 +74,7 @@ export const testFeature = createFeature({
     on(tableChanges, (state, { table }) => ({
       ...state,
       tables: state.tables.map(t =>
-        t.id === table.id ? { ...t, answer: table.answer } : t
+        t.id === table.id ? { ...t, answer: table.answer, responseTime: table.responseTime } : t
       ),
     })),
     on(nomChanges, (state, { nom }) => ({ ...state, nom })),

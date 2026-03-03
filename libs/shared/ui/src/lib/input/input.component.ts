@@ -10,7 +10,10 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
       <label class="absolute ml-2 -translate-y-3 bg-white scale-75 px-2">
         <ng-content></ng-content>
       </label>
-      <input #inputElement [formControl]="value" type="text" class="border border-black rounded-lg w-full p-2 font-sans"/>
+      <input #inputElement [formControl]="value" type="text"
+        [attr.inputmode]="numbersOnly ? 'numeric' : null"
+        (keydown)="onKeyDown($event)"
+        class="border border-black rounded-lg w-full p-2 font-sans"/>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +26,7 @@ export class InputComponent implements AfterViewInit {
     }
   }
   @Input() autofocus = false;
+  @Input() numbersOnly = false;
 
   value = new FormControl('', { nonNullable: true });
   @Output() valueChanges = this.value.valueChanges;
@@ -33,5 +37,13 @@ export class InputComponent implements AfterViewInit {
     if (this.inputElement) {
       this.inputElement.nativeElement.focus();
     }
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (!this.numbersOnly) return;
+    const allowed = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'Home', 'End'];
+    if (allowed.includes(event.key)) return;
+    if ((event.ctrlKey || event.metaKey) && ['a', 'c', 'v', 'x'].includes(event.key.toLowerCase())) return;
+    if (!/^\d$/.test(event.key)) event.preventDefault();
   }
 }
